@@ -38,18 +38,11 @@ jobs:
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
-    - name: Run Trivy scanner
-      uses: aquasecurity/trivy-action@0.20.0
-      with:
-        scan-type: config
-        hide-progress: true
-        output: trivy.txt
-
     - name: Run Trivy vulnerability scanner in IaC mode
       uses: aquasecurity/trivy-action@0.20.0
       with:
         scan-type: 'config'
-        hide-progress: true
+        hide-progress: false
         format: 'sarif'
         exit-code: '1'
         ignore-unfixed: true
