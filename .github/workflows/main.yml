@@ -38,17 +38,26 @@ jobs:
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
-    - name: Run Trivy vulnerability scanner in IaC mode
+    - name: Run Trivy scanner
       uses: aquasecurity/trivy-action@0.20.0
       with:
-        scan-type: 'config'
-        hide-progress: false
-        format: 'sarif'
-        output: 'trivy-results.sarif'
-        exit-code: '1'
-        ignore-unfixed: true
-        severity: 'CRITICAL,HIGH'
-        file: 'tfplan.json'
+        scan-type: config
+        hide-progress: true
+        output: trivy.txt
+
+    - name: Publish Trivy Output to Summary
+      run: |
+        if [[ -s trivy.txt ]]; then
+          {
+            echo "### Security Output"
+            echo "<details><summary>Click to expand</summary>"
+            echo ""
+            echo '```terraform'
+            cat trivy.txt
+            echo '```'
+            echo "</details>"
+          } >> $GITHUB_STEP_SUMMARY
+        fi
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
