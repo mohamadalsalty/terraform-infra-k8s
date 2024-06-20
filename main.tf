@@ -4,11 +4,11 @@ module "gcs" {
   region       = var.region
 }
 
-# module "network" {
-#   source       = "./network"
-#   project_name = var.project_name
-#   region       = var.region
-# }
+module "network" {
+  source       = "./network"
+  project_name = var.project_name
+  region       = var.region
+}
 
 # module "gke" {
 #   source       = "./gke"
