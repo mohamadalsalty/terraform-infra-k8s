@@ -1,0 +1,4 @@
+.terraform*
+sa.json
+tfplan.json
+plan.tfplan
