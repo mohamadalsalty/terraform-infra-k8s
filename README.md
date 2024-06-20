@@ -1,8 +1,6 @@
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | = 1.8.2 |
+No requirements.
 
 ## Providers
 
@@ -13,7 +11,6 @@ No providers.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_gcs"></a> [gcs](#module\_gcs) | ./gcs | n/a |
-| <a name="module_gke"></a> [gke](#module\_gke) | ./gke | n/a |
 | <a name="module_network"></a> [network](#module\_network) | ./network | n/a |
 
 ## Resources
