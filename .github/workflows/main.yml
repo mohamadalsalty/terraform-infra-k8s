@@ -34,7 +34,7 @@ jobs:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }} 
 
     - name: Terraform Plan
-      run: terraform plan -input=false
+      run: terraform plan -input=false -out=plan.tfplan && terraform show -json plan.tfplan > tfplan.json
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
