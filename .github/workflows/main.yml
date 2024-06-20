@@ -21,14 +21,18 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
-    - name: Terraform workspace select
-      run: terraform workspace select prod || terraform workspace new prod
-        
+
     - name: Terraform Init
       run: terraform init
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }} 
 
+    - name: Terraform workspace select
+      run: terraform workspace select prod || terraform workspace new prod
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }} 
+
+        
 
     - name: Terraform Plan
       run: terraform plan -input=false
