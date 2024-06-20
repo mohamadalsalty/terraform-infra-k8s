@@ -41,7 +41,7 @@ jobs:
     - name: Trivy Scan TFPlan
       run: |
         curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
-        cat tfplan.json && trivy config  --exit-code 0 tfplan.json
+        trivy config  --exit-code 0 tfplan.json
 
 
     - name: Terraform Apply
