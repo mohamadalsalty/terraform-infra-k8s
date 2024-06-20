@@ -38,16 +38,12 @@ jobs:
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
-    - name: Run Trivy vulnerability scanner in IaC mode
+    - name: Run Trivy vulnerability scanner in fs mode
       uses: aquasecurity/trivy-action@0.20.0
       with:
         scan-type: 'config'
-        hide-progress: false
-        format: 'sarif'
-        exit-code: '1'
-        ignore-unfixed: true
-        severity: 'CRITICAL,HIGH'
-        scan-ref: 'tfplan.json'
+        scan-ref: '.'
+        trivy-config: trivy.yaml
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'

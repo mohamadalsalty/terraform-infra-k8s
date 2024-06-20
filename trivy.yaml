@@ -1,0 +1,5 @@
+format: json
+exit-code: 1
+severity: HIGH
+secret:
+  config: tfplan.json
