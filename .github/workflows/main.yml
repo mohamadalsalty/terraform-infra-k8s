@@ -47,7 +47,7 @@ jobs:
         exit-code: '1'
         ignore-unfixed: true
         severity: 'CRITICAL,HIGH'
-
+        scan-ref: 'tfplan.json'
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
