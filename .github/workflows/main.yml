@@ -51,6 +51,6 @@ jobs:
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply plan.tfplan -auto-approve -input=false
+      run: terraform apply -auto-approve plan.tfplan
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
