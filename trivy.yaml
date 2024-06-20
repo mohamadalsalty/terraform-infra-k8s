@@ -1,5 +1,5 @@
-format: json
+format: tabel
 exit-code: 1
-severity: HIGH
+severity: CRITICAL
 secret:
   config: tfplan.json
