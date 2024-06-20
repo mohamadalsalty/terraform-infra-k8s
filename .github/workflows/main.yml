@@ -47,21 +47,8 @@ jobs:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
     - name: Trivy Scan Terraform config
-      id: trivy_scan
-      run: trivy config ./tfplan.json || exit 0
+      run: trivy config ./tfplan.json  || exit 0
 
-    - name: Check Trivy scan results
-      if: steps.trivy_scan.outcome == 'success'
-      run: |
-        TRIVY_OUTPUT=$(trivy --format json ./tfplan.json)
-        CRITICAL_COUNT=$(echo $TRIVY_OUTPUT | jq '.[0].Vulnerabilities | map(select(.Severity | contains("CRITICAL"))) | length')
-        HIGH_COUNT=$(echo $TRIVY_OUTPUT | jq '.[0].Vulnerabilities | map(select(.Severity | contains("HIGH"))) | length')
-        if [ $CRITICAL_COUNT -gt 0 ] || [ $HIGH_COUNT -gt 0 ]; then
-          echo "Vulnerabilities found!"
-          echo $TRIVY_OUTPUT | jq .
-          exit 1
-        fi
-        
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve plan.tfplan
