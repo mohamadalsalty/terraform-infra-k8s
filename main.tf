@@ -10,9 +10,9 @@ module "network" {
   region       = var.region
 }
 
-module "gke" {
-  source       = "./gke"
-  project_name = var.project_name
-  region       = var.region
-  vpc_network  = module.network.vpc_network
-}
+# module "gke" {
+#   source       = "./gke"
+#   project_name = var.project_name
+#   region       = var.region
+#   vpc_network  = module.network.vpc_network
+# }
