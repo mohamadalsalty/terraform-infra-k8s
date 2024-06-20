@@ -1,9 +1,7 @@
 config:
   - tfplan.json
-
-skip-dirs:
-  - .terraform
-
+skip-files:
+  - "**/.terraform/**/*"
 format: table
 exit-code: 1
 severity:
