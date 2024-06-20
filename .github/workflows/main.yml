@@ -23,6 +23,11 @@ jobs:
       with:
         terraform_version: 1.8.2
 
+    - name: Install Trivy
+      run: |
+        wget https://github.com/aquasecurity/trivy/releases/download/v0.21.0/trivy_0.21.0_Linux-64bit.deb
+        sudo dpkg -i trivy_0.21.0_Linux-64bit.deb
+
 
     - name: Terraform Init
       run: terraform init
@@ -37,12 +42,15 @@ jobs:
         
 
     - name: Terraform Plan
-      run: terraform plan -input=false
+      run: terraform plan -input=false -out=plan.tfplan
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
+    - name: Trivy Scan Terraform config
+      run: trivy config ./tfplan.json
+
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false
+      run: terraform apply plan.tfplan -auto-approve -input=false
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
