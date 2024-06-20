@@ -23,6 +23,11 @@ jobs:
       with:
         terraform_version: 1.8.5
 
+    - name: Clean Terraform directory
+      run: |
+        rm -rf .terraform
+        rm -f .terraform.lock.hcl        
+
     - name: Terraform Init
       run: terraform init
       env:
