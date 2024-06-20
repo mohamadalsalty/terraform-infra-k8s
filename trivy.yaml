@@ -1,5 +1,3 @@
-config:
-  - tfplan.json
 format: table
 exit-code: 1
 severity:
