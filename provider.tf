@@ -7,4 +7,10 @@ terraform {
     bucket = "tf-state-pipelineformidable-bank-427016-h1"
     prefix = "terraform/state"
   }
+
+  required_providers {
+    random = { 
+    }
+  }
+
 }
