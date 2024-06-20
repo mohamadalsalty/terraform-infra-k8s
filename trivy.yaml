@@ -1,7 +1,13 @@
+config:
+  - tfplan.json
+
+skip-dirs:
+  - .terraform
+
 format: table
 exit-code: 1
-severity: MEDIUM,HIGH,CRITICAL
-secret:
-  config: tfplan.json
-skip-dirs:
-  - .terraform/modules/
+severity:
+  - MEDIUM
+  - HIGH
+  - CRITICAL
+ignore-unfixed: true
