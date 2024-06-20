@@ -45,19 +45,17 @@ jobs:
         hide-progress: true
         output: trivy.txt
 
-    - name: Publish Trivy Output to Summary
-      run: |
-        if [[ -s trivy.txt ]]; then
-          {
-            echo "### Security Output"
-            echo "<details><summary>Click to expand</summary>"
-            echo ""
-            echo '```terraform'
-            cat trivy.txt
-            echo '```'
-            echo "</details>"
-          } >> $GITHUB_STEP_SUMMARY
-        fi
+    - name: Run Trivy vulnerability scanner in IaC mode
+      uses: aquasecurity/trivy-action@0.20.0
+      with:
+        scan-type: 'config'
+        hide-progress: true
+        format: 'sarif'
+        exit-code: '1'
+        ignore-unfixed: true
+        severity: 'CRITICAL,HIGH'
+
+
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
