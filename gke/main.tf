@@ -75,11 +75,11 @@ module "gke" {
 
   }
 
-  depends_on = [var.subnet_link, time_sleep.wait_60_seconds]
-disable_legacy_metadata_endpoints = true
+  depends_on                        = [var.subnet_link, time_sleep.wait_60_seconds]
+  disable_legacy_metadata_endpoints = true
 
 }
 output "gke_name" {
-  value = module.gke.name
-  depends_on = [ module.gke ]
+  value      = module.gke.name
+  depends_on = [module.gke]
 }
