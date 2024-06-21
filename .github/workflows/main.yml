@@ -28,6 +28,13 @@ jobs:
         rm -rf .terraform
         rm -f .terraform.lock.hcl        
 
+    - name: Run Trivy vulnerability scanner in config mode
+      uses: aquasecurity/trivy-action@0.20.0
+      with:
+        scan-type: 'config'
+        trivy-config: trivy.yaml
+
+
     - name: Terraform Init
       run: terraform init -upgrade
       env:
@@ -55,12 +62,6 @@ jobs:
       run: terraform plan -out=plan.tfplan && terraform show -json plan.tfplan > tfplan.json
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
-
-    - name: Run Trivy vulnerability scanner in config mode
-      uses: aquasecurity/trivy-action@0.20.0
-      with:
-        scan-type: 'config'
-        trivy-config: trivy.yaml
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
