@@ -2,6 +2,13 @@ resource "google_compute_network" "vpc_network" {
   name                    = var.vpc_name
   auto_create_subnetworks = false
 }
+resource "null_resource" "previous" {}
+
+resource "time_sleep" "wait_60_seconds" {
+  depends_on = [null_resource.previous]
+
+  create_duration = "60s"
+}
 
 resource "google_compute_subnetwork" "vpc_subnet_nodes" {
   name          = var.subnet_node_name
@@ -19,7 +26,8 @@ resource "google_compute_subnetwork" "vpc_subnet_nodes" {
 
   region     = var.region
   network    = google_compute_network.vpc_network.id
-  depends_on = [google_compute_network.vpc_network]
+  depends_on = [google_compute_network.vpc_network, time_sleep.wait_60_seconds]
+
 }
 
 output "vpc_network" {

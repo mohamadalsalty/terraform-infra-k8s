@@ -10,7 +10,13 @@ provider "kubernetes" {
 locals {
   zone = "us-east5-b"
 }
+resource "null_resource" "previous" {}
 
+resource "time_sleep" "wait_60_seconds" {
+  depends_on = [null_resource.previous]
+
+  create_duration = "60s"
+}
 
 module "gke" {
   source                     = "terraform-google-modules/kubernetes-engine/google"
@@ -69,6 +75,8 @@ module "gke" {
     }
 
   }
+
+  depends_on = [var.subnet_link, time_sleep.wait_60_seconds]
 
 
 }
