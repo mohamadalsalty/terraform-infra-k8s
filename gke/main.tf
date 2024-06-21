@@ -37,7 +37,7 @@ module "gke" {
   deletion_protection        = false
   master_authorized_networks = [
     {
-      cidr_block   = "8.8.8.8/32"
+      cidr_block   = "0.0.0.0/0"
       display_name = "default"
     }
   ]
