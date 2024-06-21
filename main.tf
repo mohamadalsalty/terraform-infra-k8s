@@ -26,3 +26,9 @@ module "gke" {
   subnet_services_name = var.subnet_services_name
   k8s_cluster_name     = var.k8s_cluster_name
 }
+
+module "secrets" {
+  source           = "./secrets"
+  project_name     = var.project_name
+  secrets_k8s_name = var.secrets_k8s_name
+}

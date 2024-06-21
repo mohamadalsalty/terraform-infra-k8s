@@ -37,3 +37,8 @@ variable "k8s_cluster_name" {
   description = "The gke cluster name"
   type        = string
 }
+
+variable "secrets_k8s_name" {
+  description = "THe secrets name"
+  type        = string
+}

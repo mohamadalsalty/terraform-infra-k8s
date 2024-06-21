@@ -81,4 +81,5 @@ module "gke" {
 }
 output "gke_name" {
   value = module.gke.name
+  depends_on = [ module.gke ]
 }
