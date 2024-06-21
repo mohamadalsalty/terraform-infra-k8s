@@ -9,7 +9,7 @@ terraform {
   }
 
   required_providers {
-    random = { 
+    random = {
     }
   }
 

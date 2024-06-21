@@ -15,12 +15,12 @@ locals {
 module "gke" {
   source                     = "terraform-google-modules/kubernetes-engine/google"
   project_id                 = var.project_name
-  name                       = "gke"
+  name                       = var.k8s_cluster_name
   region                     = var.region
   network                    = var.vpc_network
-  subnetwork                 = "k8s-subnet-nodes"
-  ip_range_pods              = "k8s-subnet-pods"
-  ip_range_services          = "k8s-subnet-services"
+  subnetwork                 = var.subnet_node_name
+  ip_range_pods              = var.subnet_pods_name
+  ip_range_services          = var.subnet_services_name
   http_load_balancing        = false
   network_policy             = true
   horizontal_pod_autoscaling = true
@@ -71,4 +71,7 @@ module "gke" {
   }
 
 
+}
+output "gke_name" {
+  value = module.gke.name
 }

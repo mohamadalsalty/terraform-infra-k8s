@@ -1,10 +1,10 @@
 resource "google_compute_network" "vpc_network" {
-  name                    = "k8s-vpc-network"
+  name                    = var.vpc_name
   auto_create_subnetworks = false
 }
 
-resource "google_compute_subnetwork" "vpc_subnet-nodes" {
-  name          = "k8s-subnet-nodes"
+resource "google_compute_subnetwork" "vpc_subnet_nodes" {
+  name          = var.subnet_node_name
   ip_cidr_range = "10.0.0.0/16"
 
   secondary_ip_range {
@@ -24,4 +24,8 @@ resource "google_compute_subnetwork" "vpc_subnet-nodes" {
 
 output "vpc_network" {
   value = google_compute_network.vpc_network.name
+}
+
+output "vpc_subnet_nodes" {
+  value = google_compute_subnetwork.vpc_subnet_nodes.name
 }

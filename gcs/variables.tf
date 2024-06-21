@@ -7,3 +7,8 @@ variable "region" {
   description = "The region"
   type        = string
 }
+
+variable "name" {
+  description = "The name of the bucket"
+  type        = string
+}
