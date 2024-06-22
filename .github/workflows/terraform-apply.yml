@@ -9,8 +9,15 @@ permissions:
   contents: read
 
 jobs:
+  terraform_tests:
+    name: 'Terraform Tests'
+    uses: ./.github/workflows/terraform-tests.yml
+    with:
+      gcp-sa-key: ${{ secrets.GCP_SA_KEY }}
+
   terraform:
     name: 'Terraform'
+    needs: terraform_tests
     runs-on: ubuntu-latest
     environment: production
 
@@ -26,37 +33,17 @@ jobs:
     - name: Clean Terraform directory
       run: |
         rm -rf .terraform
-        rm -f .terraform.lock.hcl        
-
-    - name: Run Trivy vulnerability scanner in config mode
-      uses: aquasecurity/trivy-action@0.20.0
-      with:
-        scan-type: 'config'
-        trivy-config: trivy.yaml
-
+        rm -f .terraform.lock.hcl
 
     - name: Terraform Init
       run: terraform init -upgrade
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }} 
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
     - name: Terraform workspace select
       run: terraform workspace select prod || terraform workspace new prod
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }} 
-
-    - name: Terraform Validate
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform validate
-      env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
-
-    - name: Terraform Test
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform test
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
-
 
     - name: Terraform Plan
       run: terraform plan -out=plan.tfplan && terraform show -json plan.tfplan > tfplan.json
