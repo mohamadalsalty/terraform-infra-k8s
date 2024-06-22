@@ -5,7 +5,7 @@ on:
 
 jobs:
   tests:
-    name: 'Terraform Tests'
+    name: 'Starting the Tests'
     runs-on: ubuntu-latest
 
     steps:
@@ -31,19 +31,19 @@ jobs:
     - name: Terraform Init
       run: terraform init -upgrade
       env:
-        GOOGLE_CREDENTIALS: ${{ inputs.gcp-sa-key }}
+        GOOGLE_CREDENTIALS: ${{ secrets.gcp-sa-key }}
 
     - name: Terraform workspace select
       run: terraform workspace select prod || terraform workspace new prod
       env:
-        GOOGLE_CREDENTIALS: ${{ inputs.gcp-sa-key }}
+        GOOGLE_CREDENTIALS: ${{ secrets.gcp-sa-key }}
 
     - name: Terraform Validate
       run: terraform validate
       env:
-        GOOGLE_CREDENTIALS: ${{ inputs.gcp-sa-key }}
+        GOOGLE_CREDENTIALS: ${{ secrets.gcp-sa-key }}
 
     - name: Terraform Test
       run: terraform test
       env:
-        GOOGLE_CREDENTIALS: ${{ inputs.gcp-sa-key }}
+        GOOGLE_CREDENTIALS: ${{ secrets.gcp-sa-key }}
