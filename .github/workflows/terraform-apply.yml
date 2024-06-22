@@ -9,7 +9,6 @@ permissions:
   contents: read
 
 jobs:
-
   terraform:
     name: 'Terraform'
     needs: terraform_tests
