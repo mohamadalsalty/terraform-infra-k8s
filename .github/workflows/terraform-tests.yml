@@ -1,0 +1,53 @@
+name: 'Terraform Tests'
+
+on:
+  workflow_call:
+    inputs:
+      gcp-sa-key:
+        required: true
+        type: string
+
+jobs:
+  tests:
+    name: 'Terraform Tests'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3.1.1
+      with:
+        terraform_version: 1.8.5
+
+    - name: Clean Terraform directory
+      run: |
+        rm -rf .terraform
+        rm -f .terraform.lock.hcl
+
+    - name: Run Trivy vulnerability scanner in config mode
+      uses: aquasecurity/trivy-action@0.20.0
+      with:
+        scan-type: 'config'
+        trivy-config: trivy.yaml
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      env:
+        GOOGLE_CREDENTIALS: ${{ inputs.gcp-sa-key }}
+
+    - name: Terraform workspace select
+      run: terraform workspace select prod || terraform workspace new prod
+      env:
+        GOOGLE_CREDENTIALS: ${{ inputs.gcp-sa-key }}
+
+    - name: Terraform Validate
+      run: terraform validate
+      env:
+        GOOGLE_CREDENTIALS: ${{ inputs.gcp-sa-key }}
+
+    - name: Terraform Test
+      run: terraform test
+      env:
+        GOOGLE_CREDENTIALS: ${{ inputs.gcp-sa-key }}
