@@ -42,3 +42,8 @@ variable "secrets_k8s_name" {
   description = "THe secrets name"
   type        = string
 }
+
+variable "sa_name" {
+  description = "The service account name"
+  type        = string
+}

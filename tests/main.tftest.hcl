@@ -9,8 +9,8 @@ variables {
   bucket_name      = "test-${var.bucket_name}"
   k8s_cluster_name = "test-${var.k8s_cluster_name}"
   secrets_k8s_name = "test-${var.secrets_k8s_name}"
+  sa_name          = "test-${var.sa_name}"
 }
-
 
 run "validate_vars" {
   command = plan
@@ -25,6 +25,11 @@ run "validate_vars" {
   assert {
     condition     = module.secrets.secret_id == var.secrets_k8s_name
     error_message = "The name of the secret is wrong"
+  }
+
+  assert {
+    condition     = module.iam.sa_for_k8s.account_id == var.sa_name
+    error_message = "The name of the serviceaccount is wrong"
   }
 
 }
@@ -47,5 +52,10 @@ run "create_infra" {
   assert {
     condition     = module.secrets.secret_id == var.secrets_k8s_name
     error_message = "The secret for k8s was not created"
+  }
+
+  assert {
+    condition     = module.iam.sa_for_k8s.account_id == var.sa_name
+    error_message = "The name of the serviceaccount was not created"
   }
 }

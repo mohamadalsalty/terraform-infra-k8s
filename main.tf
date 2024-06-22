@@ -32,3 +32,10 @@ module "secrets" {
   project_name     = var.project_name
   secrets_k8s_name = var.secrets_k8s_name
 }
+
+module "iam" {
+  source       = "./iam"
+  project_name = var.project_name
+  region       = var.region
+  sa_name      = var.sa_name
+}
