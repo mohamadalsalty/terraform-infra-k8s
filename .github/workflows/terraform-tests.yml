@@ -2,10 +2,6 @@ name: 'Terraform Tests'
 
 on:
   workflow_call:
-    inputs:
-      gcp-sa-key:
-        required: true
-        type: string
 
 jobs:
   tests:

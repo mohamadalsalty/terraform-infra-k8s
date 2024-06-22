@@ -10,5 +10,3 @@ jobs:
   terraform_tests:
     name: 'Terraform Tests'
     uses: ./.github/workflows/terraform-tests.yml
-    with:
-      gcp-sa-key: ${{ secrets.GCP_SA_KEY }}  
