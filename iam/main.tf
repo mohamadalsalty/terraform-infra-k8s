@@ -16,6 +16,9 @@ resource "google_service_account_key" "sa_key" {
     "request_time" = timestamp()
   }
   private_key_type = "TYPE_GOOGLE_CREDENTIALS_FILE"
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "google_project_iam_member" "secret_manager_access" {
@@ -23,9 +26,4 @@ resource "google_project_iam_member" "secret_manager_access" {
   role       = "roles/secretmanager.secretAccessor"
   member     = "serviceAccount:${google_service_account.sa_for_k8s.email}"
   depends_on = [google_service_account.sa_for_k8s, google_project_iam_member.secret_manager_access_for_k8s, google_service_account_key.sa_key]
-}
-
-output "sa_for_k8s" {
-  value      = google_service_account.sa_for_k8s
-  depends_on = [google_service_account.sa_for_k8s]
 }
