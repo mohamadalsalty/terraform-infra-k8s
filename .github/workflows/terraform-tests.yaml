@@ -1,7 +1,10 @@
-name: 'Terraform Tests'
+name: 'Terraform tests'
 
 on:
-  workflow_call:
+  pull_request:
+    branches:
+      - main
+    types: [opened]
 
 jobs:
   tests:
@@ -47,3 +50,4 @@ jobs:
       run: terraform test
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+    
