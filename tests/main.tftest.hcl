@@ -58,4 +58,4 @@ run "create_infra" {
     condition     = module.iam.sa_for_k8s.account_id == var.sa_name
     error_message = "The name of the serviceaccount was not created"
   }
-}
+} 
