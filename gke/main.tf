@@ -48,9 +48,9 @@ module "gke" {
       name               = "default-node-pool"
       machine_type       = "e2-medium"
       node_locations     = local.zone
-      min_count          = 3
-      max_count          = 5
-      initial_node_count = 3
+      min_count          = 1
+      max_count          = 2
+      initial_node_count = 1
       local_ssd_count    = 0
       spot               = false
       disk_size_gb       = 50
@@ -74,7 +74,6 @@ module "gke" {
     }
 
   }
-
   depends_on                        = [var.subnet_link, time_sleep.wait_60_seconds]
   disable_legacy_metadata_endpoints = true
 
