@@ -19,6 +19,7 @@ resource "time_sleep" "wait_60_seconds" {
 }
 
 module "gke" {
+  version                         = "31.0.0"
   source                          = "terraform-google-modules/kubernetes-engine/google"
   project_id                      = var.project_name
   name                            = var.k8s_cluster_name
@@ -38,15 +39,20 @@ module "gke" {
   enable_vertical_pod_autoscaling = true
 
   cluster_autoscaling = {
-    enabled             = true
-    min_cpu_cores       = 3 * 2  # 3 nodes * 2 vCPUs each
-    max_cpu_cores       = 5 * 2  # 5 nodes * 2 vCPUs each
-    min_memory_gb       = 3 * 8 # 3 nodes * 8 GB each
-    max_memory_gb       = 5 * 8 # 5 nodes * 8 GB each
-    auto_repair         = true
-    auto_upgrade        = true
-    autoscaling_profile = "BALANCED"
-    gpu_resources       = []
+    enabled                     = true
+    min_cpu_cores               = 1
+    max_cpu_cores               = 10
+    min_memory_gb               = 5
+    max_memory_gb               = 40
+    auto_repair                 = true
+    auto_upgrade                = true
+    autoscaling_profile         = "OPTIMIZE_UTILIZATION"
+    gpu_resources               = []
+    enable_integrity_monitoring = true
+    max_surge                   = 5
+    max_unavailable             = 5
+    auto_upgrade                = true
+    strategy                    = "SURGE"
   }
 
   master_authorized_networks = [
@@ -59,27 +65,30 @@ module "gke" {
 
   node_pools = [
     {
-      name               = "default-node-pool"
-      machine_type       = "e2-standard-2"
-      node_locations     = local.zone
-      min_count          = 3
-      max_count          = 5
-      initial_node_count = 1
-      local_ssd_count    = 0
-      spot               = false
-      disk_size_gb       = 50
-      disk_type          = "pd-standard"
-      image_type         = "COS_CONTAINERD"
-      enable_gcfs        = false
-      enable_gvnic       = false
-      logging_variant    = "DEFAULT"
-      auto_repair        = true
-      auto_upgrade       = true
-      default            = false
-      service_account    = "default"
-      preemptible        = false
+      name                        = "pool-1"
+      enable_integrity_monitoring = true
+      machine_type                = "e2-standard-2"
+      node_locations              = local.zone
+      min_count                   = 3
+      max_count                   = 5
+      initial_node_count          = 1
+      local_ssd_count             = 0
+      spot                        = false
+      disk_size_gb                = 50
+      disk_type                   = "pd-standard"
+      image_type                  = "COS_CONTAINERD"
+      enable_gcfs                 = false
+      enable_gvnic                = false
+      logging_variant             = "DEFAULT"
+      auto_repair                 = true
+      auto_upgrade                = true
+      default                     = false
+      service_account             = "default"
+      preemptible                 = false
     },
   ]
+
+
   node_pools_labels = {
     all = {}
 
