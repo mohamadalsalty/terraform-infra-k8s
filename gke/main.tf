@@ -41,8 +41,8 @@ module "gke" {
     enabled             = true
     min_cpu_cores       = 3 * 4  # 3 nodes * 4 vCPUs each
     max_cpu_cores       = 5 * 4  # 5 nodes * 4 vCPUs each
-    min_memory_gb       = 3 * 16 # 3 nodes * 16 GB each
-    max_memory_gb       = 5 * 16 # 5 nodes * 16 GB each
+    min_memory_gb       = 3 * 8 # 3 nodes * 8 GB each
+    max_memory_gb       = 5 * 8 # 5 nodes * 8 GB each
     auto_repair         = true
     auto_upgrade        = true
     autoscaling_profile = "BALANCED"
