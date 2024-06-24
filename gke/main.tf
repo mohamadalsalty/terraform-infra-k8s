@@ -39,8 +39,8 @@ module "gke" {
 
   cluster_autoscaling = {
     enabled             = true
-    min_cpu_cores       = 3 * 4  # 3 nodes * 4 vCPUs each
-    max_cpu_cores       = 5 * 4  # 5 nodes * 4 vCPUs each
+    min_cpu_cores       = 3 * 2  # 3 nodes * 2 vCPUs each
+    max_cpu_cores       = 5 * 2  # 5 nodes * 2 vCPUs each
     min_memory_gb       = 3 * 8 # 3 nodes * 8 GB each
     max_memory_gb       = 5 * 8 # 5 nodes * 8 GB each
     auto_repair         = true
@@ -62,7 +62,7 @@ module "gke" {
       name               = "default-node-pool"
       machine_type       = "e2-standard-2"
       node_locations     = local.zone
-      min_count          = 0
+      min_count          = 3
       max_count          = 5
       initial_node_count = 1
       local_ssd_count    = 0
