@@ -19,24 +19,36 @@ resource "time_sleep" "wait_60_seconds" {
 }
 
 module "gke" {
-  source                     = "terraform-google-modules/kubernetes-engine/google"
-  project_id                 = var.project_name
-  name                       = var.k8s_cluster_name
-  region                     = var.region
-  network                    = var.vpc_network
-  subnetwork                 = var.subnet_node_name
-  ip_range_pods              = var.subnet_pods_name
-  ip_range_services          = var.subnet_services_name
-  http_load_balancing        = false
-  network_policy             = true
-  horizontal_pod_autoscaling = true
-  filestore_csi_driver       = false
-  remove_default_node_pool   = true
-  regional                   = false
-  zones                      = [local.zone]
-  deletion_protection        = false
+  source                          = "terraform-google-modules/kubernetes-engine/google"
+  project_id                      = var.project_name
+  name                            = var.k8s_cluster_name
+  region                          = var.region
+  network                         = var.vpc_network
+  subnetwork                      = var.subnet_node_name
+  ip_range_pods                   = var.subnet_pods_name
+  ip_range_services               = var.subnet_services_name
+  http_load_balancing             = false
+  network_policy                  = true
+  horizontal_pod_autoscaling      = true
+  filestore_csi_driver            = false
+  remove_default_node_pool        = true
+  regional                        = false
+  zones                           = [local.zone]
+  deletion_protection             = false
   enable_vertical_pod_autoscaling = true
-  
+
+  cluster_autoscaling = {
+    enabled             = true
+    min_cpu_cores       = 3 * 4  # 3 nodes * 4 vCPUs each
+    max_cpu_cores       = 5 * 4  # 5 nodes * 4 vCPUs each
+    min_memory_gb       = 3 * 16 # 3 nodes * 16 GB each
+    max_memory_gb       = 5 * 16 # 5 nodes * 16 GB each
+    auto_repair         = true
+    auto_upgrade        = true
+    autoscaling_profile = "BALANCED"
+    gpu_resources       = []
+  }
+
   master_authorized_networks = [
     {
       cidr_block   = "0.0.0.0/0"
@@ -48,10 +60,10 @@ module "gke" {
   node_pools = [
     {
       name               = "default-node-pool"
-      machine_type       = "e2-medium"
+      machine_type       = "e2-standard-2"
       node_locations     = local.zone
-      min_count          = 1
-      max_count          = 2
+      min_count          = 0
+      max_count          = 5
       initial_node_count = 1
       local_ssd_count    = 0
       spot               = false
