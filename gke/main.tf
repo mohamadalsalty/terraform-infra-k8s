@@ -46,7 +46,7 @@ module "gke" {
     max_memory_gb               = 70
     auto_repair                 = true
     auto_upgrade                = true
-    autoscaling_profile         = "OPTIMIZE_UTILIZATION"
+    autoscaling_profile         = "BALANCED"
     gpu_resources               = []
     enable_integrity_monitoring = true
     max_surge                   = 5
