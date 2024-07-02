@@ -40,7 +40,7 @@ module "gke" {
 
   cluster_autoscaling = {
     enabled                     = true
-    min_cpu_cores               = 2
+    min_cpu_cores               = 5
     max_cpu_cores               = 30
     min_memory_gb               = 10
     max_memory_gb               = 70
