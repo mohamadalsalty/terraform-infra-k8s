@@ -49,8 +49,8 @@ module "gke" {
     autoscaling_profile         = "BALANCED"
     gpu_resources               = []
     enable_integrity_monitoring = true
-    max_surge                   = 5
-    max_unavailable             = 5
+    max_surge                   = 1
+    max_unavailable             = 1
     auto_upgrade                = true
     strategy                    = "SURGE"
   }
